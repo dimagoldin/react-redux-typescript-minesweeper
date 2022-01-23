@@ -1,0 +1,9 @@
+@import "../../styles/index.scss";
+
+.GameParamInput {
+    @include borders;
+}
+
+.input {
+    @include borders;
+}
