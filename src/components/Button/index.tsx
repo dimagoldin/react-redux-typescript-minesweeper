@@ -19,6 +19,11 @@ const Button: React.FC<CellButtonProps> = ({ cell, rowIndex, colIndex, onClick }
                     💣
                 </span>)
             }
+            if (cell.value !== CellValue.none) {
+                return (<div>
+                    {cell.value}
+                </div>)
+            }
         } else if (cell.state === CellState.flagged) {
             return (<span role="img" aria-label="flag">
                 🚩
