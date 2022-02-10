@@ -1,5 +1,5 @@
-import { DEFAULT_ROWS, DEFAULT_COLS, MIN_BOMBS } from '../constants';
-import { CellValue, CellState, Cell, GameSize } from '../types';
+import { DEFAULT_ROWS, DEFAULT_COLS, MIN_BOMBS } from "../constants";
+import { CellValue, CellState, Cell, GameSize } from "../types";
 
 export const generateCells = ({ rows = DEFAULT_ROWS, cols = DEFAULT_COLS, bombs = MIN_BOMBS }: GameSize): Cell[][] => {
   const cells: Cell[][] = [];
@@ -12,23 +12,22 @@ export const generateCells = ({ rows = DEFAULT_ROWS, cols = DEFAULT_COLS, bombs 
       cells[row].push({
         value: bombCells.includes(index) ? CellValue.bomb : CellValue.none,
         state: CellState.open,
-      })
+      });
       index++;
     }
   }
 
   calculateBombCounts(cells);
   return cells;
-}
+};
 
 function randomUniqueNum(range: number, outputCount: number) {
-
-  let arr = []
+  const arr = [];
   for (let i = 1; i <= range; i++) {
-    arr.push(i)
+    arr.push(i);
   }
 
-  let result = [];
+  const result = [];
 
   for (let i = 1; i <= outputCount; i++) {
     const random = Math.floor(Math.random() * (range - i));
@@ -40,15 +39,15 @@ function randomUniqueNum(range: number, outputCount: number) {
 }
 
 export const calculateBombCounts = (cells: Cell[][]): Cell[][] => {
-  for (var i = 0; i < cells.length; i++) {
-    var row = cells[i];
-    for (var j = 0; j < row.length; j++) {
-      console.log("cell[" + i + "][" + j + "] = " + row[j]);
-      cells[i][j] = calculateNumberOfBombs({ cells: cells, row: i, col: j })
+  for (let i = 0; i < cells.length; i++) {
+    const row = cells[i];
+    for (let j = 0; j < row.length; j++) {
+      // console.log("cell[" + i + "][" + j + "] = " + row[j]);
+      cells[i][j] = calculateNumberOfBombs({ cells: cells, row: i, col: j });
     }
   }
   return cells;
-}
+};
 interface CalculateNumberOfBombsInput {
   cells: Cell[][];
   row: number;
@@ -60,22 +59,37 @@ export function calculateNumberOfBombs({ cells, row, col }: CalculateNumberOfBom
     return cells?.[row]?.[col];
   }
 
-  let upperLeft: CellValue = cells?.[row - 1]?.[col - 1]?.value;
-  let upperMid: CellValue = cells?.[row - 1]?.[col]?.value;
-  let upperRight: CellValue = cells?.[row - 1]?.[col + 1]?.value;
-  let left: CellValue = cells?.[row]?.[col - 1]?.value;
-  let right: CellValue = cells?.[row]?.[col + 1]?.value;
-  let lowerLeft: CellValue = cells?.[row + 1]?.[col - 1]?.value;
-  let lowerMid: CellValue = cells?.[row + 1]?.[col]?.value;
-  let lowerRight: CellValue = cells?.[row + 1]?.[col + 1]?.value;
+  const upperLeft: CellValue = cells?.[row - 1]?.[col - 1]?.value;
+  const upperMid: CellValue = cells?.[row - 1]?.[col]?.value;
+  const upperRight: CellValue = cells?.[row - 1]?.[col + 1]?.value;
+  const left: CellValue = cells?.[row]?.[col - 1]?.value;
+  const right: CellValue = cells?.[row]?.[col + 1]?.value;
+  const lowerLeft: CellValue = cells?.[row + 1]?.[col - 1]?.value;
+  const lowerMid: CellValue = cells?.[row + 1]?.[col]?.value;
+  const lowerRight: CellValue = cells?.[row + 1]?.[col + 1]?.value;
 
-  let neighbors: CellValue[] = [upperLeft, upperMid, upperRight, left, right, lowerLeft, lowerMid, lowerRight];
-  const numberOfNeightborBombs = neighbors.map((value): number => value === CellValue.bomb ? 1 : 0).reduce((prev, curr) => prev + curr).toString();
-  
-  const cellValue: CellValue = <CellValue> numberOfNeightborBombs;
+  const neighbors: CellValue[] = [upperLeft, upperMid, upperRight, left, right, lowerLeft, lowerMid, lowerRight];
+  const numberOfNeightborBombs = neighbors
+    .map((value): number => (value === CellValue.bomb ? 1 : 0))
+    .reduce((prev, curr) => prev + curr)
+    .toString();
 
-  let cell = cells[row][col];
+  const cellValue: CellValue = <CellValue>numberOfNeightborBombs;
+
+  const cell = cells[row][col];
   cell.value = cellValue;
 
   return cell;
+}
+
+export function changeCellState(cells: Cell[][], rowIndex: number, colIndex: number, newState: CellState): Cell[][] {
+  const newCells = cells.map(function (arr) {
+    return arr.slice();
+  });
+
+  newCells[rowIndex][colIndex] = {
+    ...newCells[rowIndex][colIndex],
+    state: newState,
+  };
+  return newCells;
 }

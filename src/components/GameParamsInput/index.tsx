@@ -1,32 +1,35 @@
-import React, { useState, FormEvent } from "react";
-import { DEFAULT_ROWS, DEFAULT_COLS } from "../../constants";
-import { GameSize } from "../../types";
+import React, { FormEvent } from "react";
+import { useGameDispatchContext, useGameSize } from "../../context/gameContext";
+import { GameSize, NEW_GAME } from "../../types";
 
-interface GameParamInputProps {
-  size: GameSize;
-  setSize: any;
-}
+// interface GameParamInputProps {
+//   size: GameSize;
+//   setSize: any;
+// }
 
-const GameParamsInput: React.FC<GameParamInputProps> = (props) => {
-  let size: GameSize = { ...props.size};
+const GameParamsInput: React.FC = () => {
+  const size: GameSize = useGameSize();
+  const dispatch = useGameDispatchContext();
 
   function onChange(e: FormEvent<HTMLInputElement>): void {
     const updatedSize: GameSize = {
       ...size,
     };
     if (e.currentTarget.name === 'numberOfRows') {
-      let rows: number = Number(e.currentTarget.value);
+      const rows: number = Number(e.currentTarget.value);
       updatedSize.rows = rows;
     }
     if (e.currentTarget.name === 'numberOfCols') {
-      let cols: number = Number(e.currentTarget.value);
+      const cols: number = Number(e.currentTarget.value);
       updatedSize.cols = cols;
     }
     if (e.currentTarget.name === 'numberOfBombs') {
-      let bombs: number = Number(e.currentTarget.value);
+      const bombs: number = Number(e.currentTarget.value);
+
       updatedSize.bombs = bombs;
     }
-    props.setSize(updatedSize)
+    dispatch({type: NEW_GAME, size: updatedSize})
+    // props.setSize(updatedSize)
   }
 
   return <form>

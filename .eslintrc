@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "overrides": [
     {
       "files": ["**/*.js", "**/*.tsx"]
@@ -23,30 +23,48 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "i18next", "@typescript-eslint", "react-hooks"],
   "rules": {
     "react/prop-types": 0,
     "react/display-name": 0,
     "no-unused-vars": 0,
+    "no-case-declarations": 0,
     "require-atomic-updates": 0, //https://github.com/eslint/eslint/commit/6e36d12d95e76022172fd0ec8a5e85c22fde6a8a
     "@typescript-eslint/no-unused-vars": 2,
     "i18next/no-literal-string": [
       1,
       {
         "ignoreComponent": ["I18nSkeleton"],
+        "ignoreAttribute": [
+          "path",
+          "domLayout",
+          "variant",
+          "value",
+          "controlId",
+          "data-testid",
+          "name",
+          "as",
+          "data-toggle",
+          "pattern",
+          "mask",
+          "placement",
+          "wrapWith",
+          "backdrop",
+          "pageName"
+        ],
         "markupOnly": true
       }
     ]
   },
   "extends": [
+    "plugin:react-hooks/recommended",
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:react/recommended"
   ],
   "settings": {
     "react": {
-      "pragma": "React",
-      "version": "15.6.1"
+      "version": "17"
     }
   }
 }
