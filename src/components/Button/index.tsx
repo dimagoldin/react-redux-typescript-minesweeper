@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useCellData, useGameDispatchContext } from "../../context/gameContext";
+import { useCellData, useGameDispatch } from "../../store/hooks";
 import { Cell, CellState, CellValue, OPEN_CELL, FLAG_CELL } from "../../types";
 
 import "./Button.scss";
@@ -13,14 +13,15 @@ interface CellButtonProps {
 
 const Button: React.FC<CellButtonProps> = ({ rowIndex, colIndex }) => {
   const cell: Cell = useCellData(rowIndex, colIndex);
-  const dispatch = useGameDispatchContext();
+  // const cell: Cell = useBoard()[rowIndex][colIndex];
+  const dispatch = useGameDispatch();
 
   const onClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       event.preventDefault();
       dispatch({ type: OPEN_CELL, row: rowIndex, col: colIndex });
     },
-    [cell.state, dispatch],
+    [dispatch, rowIndex, colIndex],
   );
 
   const onRightClick = useCallback(
@@ -28,7 +29,7 @@ const Button: React.FC<CellButtonProps> = ({ rowIndex, colIndex }) => {
       event.preventDefault();
       dispatch({ type: FLAG_CELL, row: rowIndex, col: colIndex });
     },
-    [cell.state, dispatch],
+    [dispatch, rowIndex, colIndex],
   );
 
   const renderContent = (): React.ReactNode => {
@@ -53,7 +54,7 @@ const Button: React.FC<CellButtonProps> = ({ rowIndex, colIndex }) => {
 
     return null;
   };
-  console.log(`Rerender for cell[${rowIndex}][${colIndex}]`)
+  console.log(`Rerender for cell[${rowIndex}][${colIndex}]`);
   return (
     <div
       className={`Button ${cell.state === CellState.visible ? "visible" : ""}`}
