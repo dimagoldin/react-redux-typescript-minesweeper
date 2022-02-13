@@ -9,7 +9,14 @@ const openCell = (board: Cell[][], cellRow: number, cellCol: number) => {
 };
 
 const flagCell = (board: Cell[][], cellRow: number, cellCol: number) => {
-  const newBoard = changeCellState(board, cellRow, cellCol, CellState.flagged);
+  const { state } = board[cellRow][cellCol];
+  if (state === CellState.visible) {
+    return board;
+  }
+  const newBoard =
+    state === CellState.flagged
+      ? changeCellState(board, cellRow, cellCol, CellState.open)
+      : changeCellState(board, cellRow, cellCol, CellState.flagged);
   return newBoard;
 };
 

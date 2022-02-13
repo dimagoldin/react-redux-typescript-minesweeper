@@ -12,6 +12,8 @@ export const generateCells = ({ rows = DEFAULT_ROWS, cols = DEFAULT_COLS, bombs 
       cells[row].push({
         value: bombCells.includes(index) ? CellValue.bomb : CellValue.none,
         state: CellState.open,
+        row: row,
+        col: col,
       });
       index++;
     }
@@ -59,17 +61,9 @@ export function calculateNumberOfBombs({ cells, row, col }: CalculateNumberOfBom
     return cells?.[row]?.[col];
   }
 
-  const upperLeft: CellValue = cells?.[row - 1]?.[col - 1]?.value;
-  const upperMid: CellValue = cells?.[row - 1]?.[col]?.value;
-  const upperRight: CellValue = cells?.[row - 1]?.[col + 1]?.value;
-  const left: CellValue = cells?.[row]?.[col - 1]?.value;
-  const right: CellValue = cells?.[row]?.[col + 1]?.value;
-  const lowerLeft: CellValue = cells?.[row + 1]?.[col - 1]?.value;
-  const lowerMid: CellValue = cells?.[row + 1]?.[col]?.value;
-  const lowerRight: CellValue = cells?.[row + 1]?.[col + 1]?.value;
-
-  const neighbors: CellValue[] = [upperLeft, upperMid, upperRight, left, right, lowerLeft, lowerMid, lowerRight];
+  const neighbors = getNeighbors(cells, row, col);
   const numberOfNeightborBombs = neighbors
+    .map((value) => value.value)
     .map((value): number => (value === CellValue.bomb ? 1 : 0))
     .reduce((prev, curr) => prev + curr)
     .toString();
@@ -83,7 +77,10 @@ export function calculateNumberOfBombs({ cells, row, col }: CalculateNumberOfBom
 }
 
 export function changeCellState(cells: Cell[][], rowIndex: number, colIndex: number, newState: CellState): Cell[][] {
-  const newCells = cells.map(function (arr) {
+  if (cells[rowIndex][colIndex].state === newState) {
+    return cells;
+  }
+  let newCells = cells.map(function (arr) {
     return arr.slice();
   });
 
@@ -91,5 +88,28 @@ export function changeCellState(cells: Cell[][], rowIndex: number, colIndex: num
     ...newCells[rowIndex][colIndex],
     state: newState,
   };
+
+  //open neightbors recurseivly
+  if (newState === CellState.visible && newCells[rowIndex][colIndex].value === CellValue.none) {
+    const neighbors = getNeighbors(cells, rowIndex, colIndex);
+    for (const neighbor of neighbors) {
+      newCells = changeCellState(newCells, neighbor.row, neighbor.col, newState);
+    }
+  }
   return newCells;
+}
+
+function getNeighbors(cells: Cell[][], row: number, col: number): Cell[] {
+  const upperLeft: Cell = cells?.[row - 1]?.[col - 1];
+  const upperMid: Cell = cells?.[row - 1]?.[col];
+  const upperRight: Cell = cells?.[row - 1]?.[col + 1];
+  const left: Cell = cells?.[row]?.[col - 1];
+  const right: Cell = cells?.[row]?.[col + 1];
+  const lowerLeft: Cell = cells?.[row + 1]?.[col - 1];
+  const lowerMid: Cell = cells?.[row + 1]?.[col];
+  const lowerRight: Cell = cells?.[row + 1]?.[col + 1];
+
+  const neighbors: Cell[] = [upperLeft, upperMid, upperRight, left, right, lowerLeft, lowerMid, lowerRight];
+
+  return neighbors.filter(cell => cell !== undefined);
 }

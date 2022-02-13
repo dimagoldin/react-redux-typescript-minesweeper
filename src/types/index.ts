@@ -20,6 +20,8 @@ export enum CellState {
 export type Cell = {
     value: CellValue;
     state: CellState;
+    row: number;
+    col: number;
 }
 
 export interface GameSize {
