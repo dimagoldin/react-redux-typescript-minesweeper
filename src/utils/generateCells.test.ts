@@ -35,9 +35,18 @@ describe("generateCells utils function tests", () => {
     });
 
     test.each([
-      { given: { cells: cells, row: 1, col: 0 }, expected: expect.objectContaining({ state: CellState.open, value: CellValue.three }) },
-      { given: { cells: cells, row: 1, col: 2 }, expected: expect.objectContaining({ state: CellState.open, value: CellValue.one }) },
-      { given: { cells: cells, row: 2, col: 2 }, expected: expect.objectContaining({ state: CellState.open, value: CellValue.one }) },
+      {
+        given: { cells: cells, row: 1, col: 0 },
+        expected: expect.objectContaining({ state: CellState.open, value: CellValue.three }),
+      },
+      {
+        given: { cells: cells, row: 1, col: 2 },
+        expected: expect.objectContaining({ state: CellState.open, value: CellValue.one }),
+      },
+      {
+        given: { cells: cells, row: 2, col: 2 },
+        expected: expect.objectContaining({ state: CellState.open, value: CellValue.one }),
+      },
     ])("given border cell $given expect $expected with correct calculated bombs", ({ given, expected }) => {
       expect(calculateNumberOfBombs(given)).toStrictEqual(expected);
     });

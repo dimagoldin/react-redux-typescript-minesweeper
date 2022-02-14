@@ -63,7 +63,7 @@ export function calculateNumberOfBombs({ cells, row, col }: CalculateNumberOfBom
 
   const neighbors = getNeighbors(cells, row, col);
   const numberOfNeightborBombs = neighbors
-    .map((value) => value.value)
+    .map(value => value.value)
     .map((value): number => (value === CellValue.bomb ? 1 : 0))
     .reduce((prev, curr) => prev + curr)
     .toString();
@@ -112,4 +112,10 @@ function getNeighbors(cells: Cell[][], row: number, col: number): Cell[] {
   const neighbors: Cell[] = [upperLeft, upperMid, upperRight, left, right, lowerLeft, lowerMid, lowerRight];
 
   return neighbors.filter(cell => cell !== undefined);
+}
+
+export function checkIfGameWon(board: Cell[][], numOfBombs: number): boolean {
+  const flaggedBombs = board.flat().filter(cell => cell.value === CellValue.bomb && cell.state === CellState.flagged);
+  const numOfFlaggedBombs = flaggedBombs.length;
+  return numOfBombs === numOfFlaggedBombs;
 }

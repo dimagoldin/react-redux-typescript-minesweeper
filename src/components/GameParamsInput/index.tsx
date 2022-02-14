@@ -2,11 +2,6 @@ import React, { FormEvent } from "react";
 import { useGameDispatch, useGameSize } from "../../store/hooks";
 import { GameSize, NEW_GAME } from "../../types";
 
-// interface GameParamInputProps {
-//   size: GameSize;
-//   setSize: any;
-// }
-
 const GameParamsInput: React.FC = () => {
   const size: GameSize = useGameSize();
   const dispatch = useGameDispatch();
@@ -29,7 +24,6 @@ const GameParamsInput: React.FC = () => {
       updatedSize.bombs = bombs;
     }
     dispatch({ type: NEW_GAME, size: updatedSize });
-    // props.setSize(updatedSize)
   }
 
   return (

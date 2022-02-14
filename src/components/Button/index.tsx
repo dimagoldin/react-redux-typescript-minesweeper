@@ -1,19 +1,16 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useCellData, useGameDispatch } from "../../store/hooks";
-import { Cell, CellState, CellValue, OPEN_CELL, FLAG_CELL } from "../../types";
+import { Cell, CellState, CellValue, OPEN_CELL, FLAG_CELL, GAME_OVER } from "../../types";
 
 import "./Button.scss";
 
 interface CellButtonProps {
-  //   cell: Cell;
   colIndex: number;
   rowIndex: number;
-  //   onClick(): void;
 }
 
 const Button: React.FC<CellButtonProps> = ({ rowIndex, colIndex }) => {
   const cell: Cell = useCellData(rowIndex, colIndex);
-  // const cell: Cell = useBoard()[rowIndex][colIndex];
   const dispatch = useGameDispatch();
 
   const onClick = useCallback(
@@ -31,6 +28,12 @@ const Button: React.FC<CellButtonProps> = ({ rowIndex, colIndex }) => {
     },
     [dispatch, rowIndex, colIndex],
   );
+
+  useEffect(() => {
+    if (cell.state === CellState.visible && cell.value === CellValue.bomb) {
+      dispatch({ type: GAME_OVER })
+    }
+  }, [cell.state, cell.value, dispatch]);
 
   const renderContent = (): React.ReactNode => {
     if (cell.state === CellState.visible) {

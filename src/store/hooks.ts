@@ -23,5 +23,9 @@ export const useBoard = (): Cell[][] => useShallowEqualSelector<GameState, Cell[
 export const useGameSize = (): GameSize => useShallowEqualSelector<GameState, GameSize>(state => state.gameSize);
 export const useCellData = (row: number, col: number): Cell =>
   useShallowEqualSelector<GameState, Cell>(state => state.board[row][col]);
+export const useGameOver = (): boolean => useShallowEqualSelector<GameState, boolean>(state => state.gameOver);
+export const usePlayerWon = (): boolean => useShallowEqualSelector<GameState, boolean>(state => state.playerWon);
+export const useNumOfFlagsLeft = (): number =>
+  useShallowEqualSelector<GameState, number>(state => state.numOfFlagsLeft);
 
 export const useGameDispatch = createDispatchHook(GameContext);
