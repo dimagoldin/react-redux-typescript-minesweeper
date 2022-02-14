@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useGameDispatch, useGameOver, useGameSize, usePlayerWon } from "../../store/hooks";
 import { GameSize, NEW_GAME } from "../../types";
 
@@ -14,7 +14,17 @@ const GameStatus: React.FC = () => {
       dispatch({ type: NEW_GAME, size: gameSize });
     },
     [dispatch, gameSize],
-  );
+    );
+    
+    useEffect(() => {
+        if (playerWon) {
+            setTimeout(() => alert('Winner winner chicken dinner!'), 100);
+        }
+        if (!playerWon && gameOver) {
+            setTimeout(() => alert('Better luck next time!'), 100);
+            
+        }
+    })
 
   const getFace = () => {
     return gameOver ? (playerWon ? "😊" : "😭") : "😐";
