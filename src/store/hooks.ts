@@ -1,5 +1,5 @@
 import React from "react";
-import { Cell, GameSize, GameState } from "../types";
+import { Cell, ClockParams, GameSize, GameState } from "../types";
 import {
   createDispatchHook,
   createStoreHook,
@@ -27,5 +27,6 @@ export const useGameOver = (): boolean => useShallowEqualSelector<GameState, boo
 export const usePlayerWon = (): boolean => useShallowEqualSelector<GameState, boolean>(state => state.playerWon);
 export const useNumOfFlagsLeft = (): number =>
   useShallowEqualSelector<GameState, number>(state => state.numOfFlagsLeft);
+export const useGameClock = (): ClockParams => useShallowEqualSelector<GameState, ClockParams>(state => state.clock) 
 
 export const useGameDispatch = createDispatchHook(GameContext);

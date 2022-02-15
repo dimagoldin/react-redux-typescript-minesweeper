@@ -1,27 +1,29 @@
-import React from "react";
-
-import NumberDisplay from "../NumberDisplay";
+import React, { useEffect } from "react";
 
 import "./App.scss";
 import Button from "../Button";
 import GameParamsInput from "../GameParamsInput";
-import { useGameSize } from "../../store/hooks";
-import { GameSize } from "../../types";
+import { useGameDispatch, useGameSize } from "../../store/hooks";
+import { GameSize, TICK } from "../../types";
 import GameStatus from "../GameStatus";
 import FlagsLeftDisplay from "../FlagsLeftDisplay/FlagsLeftDisplay";
+import ElapsedTimeDisplay from "../ElapsedTimeDisplay/ElapsedTimeDisplay";
 
 const App: React.FC = () => {
   const gameSize: GameSize = useGameSize();
+  // const gameOver = useGameOver();
+  const dispatch = useGameDispatch();
+
+  useEffect(() => {
+    dispatch({ type: TICK });
+  },[])
 
 
   const renderCells = (): React.ReactNode => {
     return Array.from(Array(gameSize.rows).keys()).map(rowIndex => {
-      console.log(`${rowIndex}`);
       return (
         <div className="row" key={`row-${rowIndex}`}>
           {Array.from(Array(gameSize.cols).keys()).map(colIndex => {
-            console.log(`Row: ${rowIndex} Col: ${colIndex}`);
-
             return (
               <Button
                 key={`${rowIndex}-${colIndex}`}
@@ -43,8 +45,8 @@ const App: React.FC = () => {
       <div className="Header">
       <FlagsLeftDisplay/>
         
-        <GameStatus/>
-        <NumberDisplay value={666} />
+        <GameStatus />
+        <ElapsedTimeDisplay/>
       </div>
       <div className="Body">{renderCells()}</div>
     </div>

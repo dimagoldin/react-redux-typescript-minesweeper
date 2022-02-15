@@ -30,12 +30,18 @@ export interface GameSize {
   bombs: number;
 }
 
+export interface ClockParams {
+  elapsedTime: number;
+  intervalId: NodeJS.Timeout | undefined;
+}
+
 export interface GameState {
   board: Cell[][];
   gameSize: GameSize;
   gameOver: boolean;
   numOfFlagsLeft: number;
   playerWon: boolean;
+  clock: ClockParams;
 }
 export const NEW_GAME = "NEW_GAME";
 export const OPEN_CELL = "OPEN_CELL";
@@ -48,4 +54,5 @@ export type Action =
   | { type: "NEW_GAME"; size: GameSize }
   | { type: "GAME_OVER" }
   | { type: "OPEN_CELL"; row: number; col: number }
-  | { type: "FLAG_CELL"; row: number; col: number };
+  | { type: "FLAG_CELL"; row: number; col: number }
+  | { type: "TICK"; };

@@ -10,6 +10,10 @@ const store = configureStore({
     gameSize: { rows: DEFAULT_ROWS, cols: DEFAULT_COLS, bombs: MIN_BOMBS },
     gameOver: false,
     numOfFlagsLeft: MIN_BOMBS,
+    clock: {
+      elapsedTime: -1,
+      intervalId: undefined
+    }
   },
 });
 

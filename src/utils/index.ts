@@ -44,7 +44,6 @@ export const calculateBombCounts = (cells: Cell[][]): Cell[][] => {
   for (let i = 0; i < cells.length; i++) {
     const row = cells[i];
     for (let j = 0; j < row.length; j++) {
-      // console.log("cell[" + i + "][" + j + "] = " + row[j]);
       cells[i][j] = calculateNumberOfBombs({ cells: cells, row: i, col: j });
     }
   }
