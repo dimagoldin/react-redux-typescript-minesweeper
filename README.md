@@ -3,6 +3,8 @@ Styles and some initial code were scavanged from [Build Minesweeper with React &
 
 # Overview
 This project showcases building a minesweeper game written in ```typescript``` using ```react``` and ```react-redux``` with hooks and custom contexts.
+Code is mostly written using functional components.
+Board is not rerendered on every click, only the cell that was clicked on! (was achived using ```redux useSelector```)
 
 ![minesweeper](./media/minesweeper-demo.gif)
 
