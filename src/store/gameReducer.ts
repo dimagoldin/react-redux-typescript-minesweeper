@@ -21,7 +21,7 @@ const openCell = (board: Cell[][], cellRow: number, cellCol: number) => {
 };
 
 const flagCell = (gameState: GameState, cellRow: number, cellCol: number) => {
-  const { board, numOfFlagsLeft, gameSize } = gameState;
+  const { board, numOfFlagsLeft } = gameState;
   const { state } = board[cellRow][cellCol];
   if (state === CellState.visible) {
     return board;
@@ -42,7 +42,7 @@ const flagCell = (gameState: GameState, cellRow: number, cellCol: number) => {
     newBoard = changeCellState(board, cellRow, cellCol, CellState.flagged);
   }
   newState.board = newBoard;
-  newState.gameOver = checkIfGameWon(newBoard, gameSize.bombs);
+  newState.gameOver = checkIfGameWon(newBoard);
   newState.playerWon = newState.gameOver;
   return newState;
 };
@@ -85,7 +85,9 @@ export const reducer: Reducer<GameState, Action> = (
 
   switch (action.type) {
     case OPEN_CELL:
-      return gameOver ? { ...state } : { ...state, board: openCell(board, action.row, action.col) };
+      const newBoard = openCell(board, action.row, action.col);
+      const playerWon = checkIfGameWon(newBoard);
+      return gameOver ? { ...state } : { ...state, board: newBoard, gameOver: playerWon, playerWon: playerWon };
     case FLAG_CELL:
       return gameOver ? { ...state } : { ...state, ...flagCell(state, action.row, action.col) };
     case NEW_GAME:

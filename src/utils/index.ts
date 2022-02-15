@@ -113,8 +113,7 @@ function getNeighbors(cells: Cell[][], row: number, col: number): Cell[] {
   return neighbors.filter(cell => cell !== undefined);
 }
 
-export function checkIfGameWon(board: Cell[][], numOfBombs: number): boolean {
-  const flaggedBombs = board.flat().filter(cell => cell.value === CellValue.bomb && cell.state === CellState.flagged);
-  const numOfFlaggedBombs = flaggedBombs.length;
-  return numOfBombs === numOfFlaggedBombs;
+export function checkIfGameWon(board: Cell[][]): boolean {
+  const numOfUnopenedCells = board.flat().filter(cell => cell.state === CellState.open && cell.value !== CellValue.bomb).length;
+  return numOfUnopenedCells === 0;
 }
