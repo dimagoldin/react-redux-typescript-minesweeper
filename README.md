@@ -3,6 +3,7 @@ Styles and some initial code were scavanged from [Build Minesweeper with React &
 
 # Overview
 This project showcases building a minesweeper game written in ```typescript``` using ```react``` and ```react-redux``` with hooks and custom contexts.
+
 ![minesweeper](./media/minesweeper-demo.gif)
 
 ### `npm start`
